@@ -1,0 +1,35 @@
+# - Configuration module for the Gee library
+# Defines the following variables:
+#  GEE_VERSION      Version number of Gee
+#  GEE_INCLUDE_DIRS Include directories to use
+#  GEE_VAPI_DIR     Directory containing gee-1.0.vapi
+#  GEE_CMAKE_DIR    Directory containing this and related files
+#  GEE_LIBRARIES    Libraries to link against
+
+cmake_minimum_required(VERSION @GEE_MINIMUM_CMAKE_VERSION@ FATAL_ERROR)
+
+# vala compiler version (set in GeeConfigVersion.cmake)
+set(GEE_VERSION ${Gee_VERSION})
+# directories and useful variables
+set(GEE_INCLUDE_DIR "@CONFIG_INC_DIR@")
+set(GEE_VAPI_DIR "@CONFIG_VAPI_DIR@")
+set(GEE_CMAKE_DIR "@CONFIG_CMAKE_DIR@")
+set(GEE_LIBRARY Gee:gee)
+set(GEE_LIBRARIES ${GEE_LIBRARY})
+set(GEE_INCLUDE_DIRS
+  "${GEE_INCLUDE_DIR}"
+  @VALA_INCLUDE_DIRS@
+  )
+
+# our library dependencies
+include("${GEE_CMAKE_DIR}/GeeExports.cmake")
+
+# set vala specific properties
+set_target_properties(Gee:gee PROPERTIES
+  PUBLIC_VAPI_FILE "${GEE_VAPI_DIR}/gee-1.0.vapi"
+  INTERNAL_VAPI_FILE ""
+  VAPI_FILES "${GEE_VAPI_DIR}/gee-1.0.vapi"
+  VALA_PACKAGE_DEPENDENCIES "gobject-2.0"
+  )
+
+set(GEE_FOUND TRUE)
